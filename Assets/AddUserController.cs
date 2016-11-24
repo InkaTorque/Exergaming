@@ -4,9 +4,8 @@ using System.Collections;
 
 public struct PatientStruct
 {
-    public string name, lastname;
+    public string name, lastname,sex;
     public int age,id;
-    public char sex;
 }
 
 public class AddUserController : MonoBehaviour {
@@ -98,12 +97,12 @@ public class AddUserController : MonoBehaviour {
         ps.age = int.Parse(ageInput.text);
         if(maleToggle.isOn)
         {
-            ps.sex = 'M';
+            ps.sex = "M";
             generalForm.AddField("sex", "M");
         }
         else
         {
-            ps.sex = 'F';
+            ps.sex = "F";
             generalForm.AddField("sex", "F");
         }
         WWW pathologyListtRequest = new WWW(createUserURL, generalForm);
@@ -202,6 +201,11 @@ public class AddUserController : MonoBehaviour {
         escoliosisToggle.isOn = false;
         coxaVLToggle.isOn = false;
         coxaVrToggle.isOn = false;
+        cifodrop.value = 0;
+        hiperdrop.value = 0;
+        escodrop.value = 0;
+        cvrdrop.value = 0;
+        cvldrop.value = 0;
     }
 	
 }

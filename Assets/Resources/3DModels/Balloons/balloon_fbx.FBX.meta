@@ -1,0 +1,152 @@
+fileFormatVersion: 2
+guid: ba74baea8b34837448c2f56927cbc998
+timeCreated: 1479980291
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: balloon
+    100002: balloon002
+    100004: balloon003
+    100006: balloon004
+    100008: balloon005
+    100010: balloon006
+    100012: balloon007
+    100014: balloon008
+    100016: balloon009
+    100018: balloon010
+    100020: balloon011
+    100022: //RootNode
+    100024: Cylinder001
+    100026: Plane001
+    100028: VRayCam001
+    100030: VRayCam001.Target
+    100032: VRayLight001
+    100034: VRayLight001.Target
+    100036: VRayLight002
+    100038: VRayLight002.Target
+    400000: balloon
+    400002: balloon002
+    400004: balloon003
+    400006: balloon004
+    400008: balloon005
+    400010: balloon006
+    400012: balloon007
+    400014: balloon008
+    400016: balloon009
+    400018: balloon010
+    400020: balloon011
+    400022: //RootNode
+    400024: Cylinder001
+    400026: Plane001
+    400028: VRayCam001
+    400030: VRayCam001.Target
+    400032: VRayLight001
+    400034: VRayLight001.Target
+    400036: VRayLight002
+    400038: VRayLight002.Target
+    2300000: balloon
+    2300002: balloon002
+    2300004: balloon003
+    2300006: balloon004
+    2300008: balloon005
+    2300010: balloon006
+    2300012: balloon007
+    2300014: balloon008
+    2300016: balloon009
+    2300018: balloon010
+    2300020: balloon011
+    2300022: Cylinder001
+    2300024: Plane001
+    3300000: balloon
+    3300002: balloon002
+    3300004: balloon003
+    3300006: balloon004
+    3300008: balloon005
+    3300010: balloon006
+    3300012: balloon007
+    3300014: balloon008
+    3300016: balloon009
+    3300018: balloon010
+    3300020: balloon011
+    3300022: Cylinder001
+    3300024: Plane001
+    4300000: Plane001
+    4300002: Cylinder001
+    4300004: balloon
+    4300006: balloon002
+    4300008: balloon003
+    4300010: balloon004
+    4300012: balloon005
+    4300014: balloon006
+    4300016: balloon007
+    4300018: balloon008
+    4300020: balloon009
+    4300022: balloon010
+    4300024: balloon011
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

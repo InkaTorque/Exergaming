@@ -18,12 +18,12 @@ public struct PathologyListItem
 public class MyPatientsController : MonoBehaviour {
 
     public GameObject patientItemListPfb,pathologyItemListPfb,patientListContainer,patientDetailPanel,pathologyListContainer;
-    public Text patientDetailHeader, welcomeMessage, welcomeMessageShadow;
+    public Text patientDetailHeader, patientDetailHeaderShadow, welcomeMessage, welcomeMessageShadow;
 
     private string obtainPatientsQueryPath = "http://localhost/exergaming/getPatientList.php";
     private string obtainPacientPathologyQueryPath = "http://localhost/exergaming/getPacientPathologyList.php";
 
-    private List<PathologyListItem> currentPathologyList;
+    private Dictionary<string, int> pathologyDict;
 
 	// Use this for initialization
 	void Start () {
@@ -69,10 +69,12 @@ public class MyPatientsController : MonoBehaviour {
                 if(rd.Length>2)
                 {
                     itemData = rd.Split('|');
-                    PatientItemListStruct pil = new PatientItemListStruct();
+                    PatientStruct pil = new PatientStruct();
                     pil.id = int.Parse(itemData[0]);
                     pil.name = itemData[1];
                     pil.lastname = itemData[2];
+                    pil.sex = itemData[3];
+                    pil.age = int.Parse(itemData[4]);
                     GameObject patientItemList = GameObject.Instantiate(patientItemListPfb);
                     patientItemList.GetComponent<RectTransform>().SetParent(patientListContainer.GetComponent<RectTransform>());
                     patientItemList.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
@@ -86,11 +88,12 @@ public class MyPatientsController : MonoBehaviour {
         }
     }
 
-    public void ShowDetail(PatientItemListStruct pils)
+    public void ShowDetail(PatientStruct ps)
     {
-        patientDetailHeader.text = "Patologias de : "+pils.name +" "+pils.lastname;
-        FormManager.instance.currentSelectedPatient = pils;
-        StartCoroutine(getPathologyListByPacient(pils.id));
+        patientDetailHeader.text = "Patologias de : " + ps.name + " " + ps.lastname;
+        patientDetailHeaderShadow.text = patientDetailHeader.text;
+        FormManager.instance.currentSelectedPatient = ps;
+        StartCoroutine(getPathologyListByPacient(ps.id));
     }
 
     IEnumerator getPathologyListByPacient(int id)
@@ -109,15 +112,13 @@ public class MyPatientsController : MonoBehaviour {
                 Destroy(child.gameObject);
             }
             resultString = pathologyListtRequest.text;
-            Debug.Log("RESULTADO = " + resultString);
             resultData = resultString.Split(';');
-            currentPathologyList = new List<PathologyListItem>();
-            currentPathologyList.Clear();
+            pathologyDict = new Dictionary<string,int>();
+            pathologyDict.Clear();
             foreach (string rd in resultData)
             {
                 if (rd.Length > 2)
                 {
-                    Debug.Log("RD = "+rd);
                     itemData = rd.Split('|');
                     PathologyListItem pli = new PathologyListItem();
                     pli.id = int.Parse(itemData[0]);
@@ -129,10 +130,11 @@ public class MyPatientsController : MonoBehaviour {
                     PacientPathologyItemData ppid = pathologyItemListUI.GetComponent<PacientPathologyItemData>();
                     ppid.pli = pli;
                     ppid.FillInformation();
-                    currentPathologyList.Add(pli);
+                    pathologyDict.Add(pli.name,pli.level);
 
                 }
             }
+            FormManager.instance.pathologyDict = pathologyDict;
             patientDetailPanel.SetActive(true);
         }
         else

@@ -4,8 +4,8 @@ using System.Collections;
 
 public class PatientItemData : MonoBehaviour {
 
-    public PatientItemListStruct pilStruct;
-    public Text labelTxt;
+    public PatientStruct pilStruct;
+    public Text labelTxt,shadowTxt;
 
     [HideInInspector]
     public MyPatientsController mpc;
@@ -13,6 +13,7 @@ public class PatientItemData : MonoBehaviour {
     public void FillInformation()
     {
         labelTxt.text = pilStruct.name + " " + pilStruct.lastname;
+        shadowTxt.text = labelTxt.text;
     }
 
     public void ShowPatientDetail()
