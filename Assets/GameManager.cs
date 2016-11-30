@@ -7,7 +7,7 @@ public class TreatmentItem
 {
     public string name;
     public int reps, time;
-    public bool done;
+    public bool done,available;
 
     public TreatmentItem()
     {
@@ -16,10 +16,18 @@ public class TreatmentItem
 }
 
 [System.Serializable]
+public class MiniGameListDetail
+{
+    public GameObject container;
+    public bool available;
+    public float desiredCertanty;
+}
+
+[System.Serializable]
 public class MinigameList
 {
     public string name;
-    public GameObject container;
+    public MiniGameListDetail detail;
 }
 
 public class GameManager : MonoBehaviour {
@@ -28,22 +36,29 @@ public class GameManager : MonoBehaviour {
     public static GameManager instance;
     public Dictionary<string,int> currentPathologyDict;
     public MinigameList[] minigameList;
-    public Dictionary<string, GameObject> minigameDict;
+    public Dictionary<string, MiniGameListDetail> minigameDict;
     public bool debug;
+
+    private int availableCounter,usedCounter;
 
     void Start()
     {
-        minigameDict = new Dictionary<string, GameObject>();
+        minigameDict = new Dictionary<string, MiniGameListDetail>();
         instance = this;
+        availableCounter = 0;
         for(int i=0;i<minigameList.Length;i++)
         {
-            minigameDict.Add(minigameList[i].name, minigameList[i].container);
+            minigameDict.Add(minigameList[i].name, minigameList[i].detail);
+            if(minigameList[i].detail.available==true)
+            {
+                availableCounter++;
+            }
         }
     }
 
 	public void LaunchExergame(string response, Dictionary<string,int> dict)
     {
-        Debug.Log("RSPONSE = " + response);
+        Debug.Log("REsponse "+response);
         currentPathologyDict = dict;
         treatment = new List<TreatmentItem>();
         string[] exercises = response.Split(';');
@@ -56,6 +71,7 @@ public class GameManager : MonoBehaviour {
                 TreatmentItem ti = new TreatmentItem();
                 ti.name = results[1];
                 ti.done = false;
+                ti.available = minigameDict[ti.name].available;
                 level = currentPathologyDict[results[0]];
                 ti.reps = int.Parse(results[3 + level + (level - 2)]);
                 ti.time = int.Parse(results[3 + level + (level - 1)]);
@@ -63,6 +79,7 @@ public class GameManager : MonoBehaviour {
 
             }
         }
+        usedCounter = 0;
         stratRandomGame();
     }
 
@@ -71,24 +88,38 @@ public class GameManager : MonoBehaviour {
         Debug.Log("STARTING GAME");
         int gameIndex = 0;
         string exerciseName;
-        if(debug)
+        bool gDone, gAvailable;
+        if(usedCounter==availableCounter)
         {
-            exerciseName = treatment[gameIndex].name;
-            Debug.Log("starting game " + exerciseName);
-            minigameDict[exerciseName].GetComponent<MinigameOverseer>().StartGame(treatment[gameIndex].time, treatment[gameIndex].reps);
+            FormManager.instance.goToMyPatients();
         }
         else
         {
-            do
+            if (debug)
             {
-                System.Random rnd = new System.Random();
-                gameIndex = rnd.Next(0, treatment.Count);
-            } while (treatment[gameIndex].done == true);
-            treatment[gameIndex].done = true;
-            exerciseName = treatment[gameIndex].name;
-            Debug.Log("starting game " + exerciseName);
-            minigameDict[exerciseName].GetComponent<MinigameOverseer>().StartGame(treatment[gameIndex].time, treatment[gameIndex].reps);
+                exerciseName = treatment[gameIndex].name;
+                Debug.Log("starting game " + exerciseName);
+                minigameDict[exerciseName].container.GetComponent<MinigameOverseer>().StartGame(treatment[gameIndex].time, treatment[gameIndex].reps);
+                treatment[gameIndex].done = true;
+                usedCounter++;
+            }
+            else
+            {
+                do
+                {
+                    System.Random rnd = new System.Random();
+                    gameIndex = rnd.Next(0, treatment.Count);
+                    gDone = treatment[gameIndex].done;
+                    gAvailable = treatment[gameIndex].available;
+                } while (gDone || !gAvailable);
 
+                treatment[gameIndex].done = true;
+                exerciseName = treatment[gameIndex].name;
+                Debug.Log("starting game " + exerciseName);
+                usedCounter++;
+                minigameDict[exerciseName].container.GetComponent<MinigameOverseer>().StartGame(treatment[gameIndex].time, treatment[gameIndex].reps);
+
+            }
         }
     }
 }

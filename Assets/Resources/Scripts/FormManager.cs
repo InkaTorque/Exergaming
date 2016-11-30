@@ -79,12 +79,19 @@ public class FormManager : MonoBehaviour {
     {
         WWWForm treatmentForm = new WWWForm();
         treatmentForm.AddField("patientID", currentSelectedPatient.id);
+        Debug.Log("Sending REQUEST");
         WWW treatmentRequest = new WWW(getTreatmentURL,treatmentForm);
         yield return treatmentRequest;
+        Debug.Log("REQUEST RECIBIDO");
         if(treatmentRequest.text!="ERROR")
         {
+            Debug.Log("RESONSE ON FORM " + treatmentRequest.text);
             disableAllViews();
             GameManager.instance.LaunchExergame(treatmentRequest.text, pathologyDict);
+        }
+        else
+        {
+            Debug.Log("ERROR");
         }
     }
 
