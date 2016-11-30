@@ -1,10 +1,22 @@
 fileFormatVersion: 2
-guid: d97439b1936fdc349b93ac4acde8fa12
-timeCreated: 1480519533
+guid: b2a8906d209352641a623476219aa25a
+timeCreated: 1480523336
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    100000: birthday c0
+    100002: birthday c1
+    100004: //RootNode
+    400000: birthday c0
+    400002: birthday c1
+    400004: //RootNode
+    2300000: birthday c0
+    2300002: birthday c1
+    3300000: birthday c0
+    3300002: birthday c1
+    4300000: birthday c0
+    4300002: birthday c1
   materials:
     importMaterials: 1
     materialName: 0
@@ -63,7 +75,7 @@ ModelImporter:
     rootMotionBoneName: 
     hasTranslationDoF: 0
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

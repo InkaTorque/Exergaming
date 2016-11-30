@@ -78,7 +78,6 @@ public class BaloonMinigame : MonoBehaviour {
         readyToSpawn = false;
         currentBalloon = go;
         waitingForPlayerInput = true;
-        activationBar.SetActive(true);
     }
 
     private void ShowBar()

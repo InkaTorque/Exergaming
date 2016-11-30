@@ -33,7 +33,7 @@ public class MinigameOverseer : MonoBehaviour {
     public string gameName, GameDescription;
     public Sprite[] gameTutFrames;
     public ImageUIAnimator iuia;
-    public GameObject starPFB;
+    public GameObject[] stars;
 
     [HideInInspector]
     public int currentScore;
@@ -50,6 +50,7 @@ public class MinigameOverseer : MonoBehaviour {
         {
             if (Input.GetKeyDown(KeyCode.Q))
             {
+                currentTime = 0;
                 ShowResultsScreen();
             }
             if(Input.GetKeyDown(KeyCode.G))
@@ -163,24 +164,20 @@ public class MinigameOverseer : MonoBehaviour {
         timeGO.SetActive(false);
         scoreGO.SetActive(false);
         resultsHoldTimer = 0f;
+        resultsSetUPdONE = false;
 
     }
     private void FillResultsPanel()
     {
-        Transform parent = starPannel.transform;
-
-        foreach (Transform child in parent)
+        for (int i = 0; i < 5; i++)
         {
-            if(child.name!=starPannel.name)
-            {
-                Destroy(child);
-            }
+            stars[i].SetActive(false);
         }
         resultNameTex.text = gameName;
         resultsScoreText.text = "" + currentScore.ToString() + "/" + reps.ToString();
         float ratio = currentScore / reps;
         float startNumber=0;
-        Debug.Log("RATO " + ratio);
+        Debug.Log("RATO " + ratio + "CS "+currentScore + "REPS "+reps);
         if(ratio>=0 && ratio<=0.2)
         {
             startNumber = 1;
@@ -198,11 +195,9 @@ public class MinigameOverseer : MonoBehaviour {
         {
             startNumber = 5;
         }
-        for(int i =1;i<=startNumber;i++)
+        for(int j =0;j<startNumber;j++)
         {
-            GameObject star = GameObject.Instantiate(starPFB);
-            star.transform.SetParent(starPannel.transform);
-            star.GetComponent<RectTransform>().localScale = Vector3.one;
+            stars[j].SetActive(true);
         }
         resultsSetUPdONE = true;
     }
