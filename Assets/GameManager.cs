@@ -8,6 +8,7 @@ public class TreatmentItem
     public string name;
     public int reps, time;
     public bool done,available;
+    public float certanty;
 
     public TreatmentItem()
     {
@@ -41,6 +42,13 @@ public class GameManager : MonoBehaviour {
 
     private int availableCounter,usedCounter;
 
+    public string currentExercise;
+    public float currentCertantyThreshold;
+    private GameObject currentContainer;
+
+    public AudioClip success, fail;
+    public bool allowInput;
+
     void Start()
     {
         minigameDict = new Dictionary<string, MiniGameListDetail>();
@@ -54,6 +62,7 @@ public class GameManager : MonoBehaviour {
                 availableCounter++;
             }
         }
+        allowInput = false;
     }
 
 	public void LaunchExergame(string response, Dictionary<string,int> dict)
@@ -71,6 +80,7 @@ public class GameManager : MonoBehaviour {
                 TreatmentItem ti = new TreatmentItem();
                 ti.name = results[1];
                 ti.done = false;
+                ti.certanty = minigameDict[ti.name].desiredCertanty;
                 ti.available = minigameDict[ti.name].available;
                 level = currentPathologyDict[results[0]];
                 ti.reps = int.Parse(results[3 + level + (level - 2)]);
@@ -85,6 +95,7 @@ public class GameManager : MonoBehaviour {
 
     public void stratRandomGame()
     {
+        allowInput = false;
         Debug.Log("STARTING GAME");
         int gameIndex = 0;
         string exerciseName;
@@ -115,11 +126,36 @@ public class GameManager : MonoBehaviour {
 
                 treatment[gameIndex].done = true;
                 exerciseName = treatment[gameIndex].name;
+                currentExercise = treatment[gameIndex].name;
+                currentCertantyThreshold = treatment[gameIndex].certanty;
                 Debug.Log("starting game " + exerciseName);
                 usedCounter++;
+                currentContainer = minigameDict[exerciseName].container;
                 minigameDict[exerciseName].container.GetComponent<MinigameOverseer>().StartGame(treatment[gameIndex].time, treatment[gameIndex].reps);
 
             }
         }
+    }
+
+    public void NotifyContainerOfSueccessfulGesture()
+    {
+        if(allowInput)
+        {
+            currentContainer.GetComponent<MinigameOverseer>().GestureDone();
+        }
+    }
+
+    public void Score(bool validiy)
+    {
+        currentContainer.GetComponent<MinigameOverseer>().ProcessEvaluation(validiy);
+    }
+
+    public void PlaySuccess()
+    {
+        GetComponent<AudioSource>().PlayOneShot(success, 1F);
+    }
+    public void PlayFail()
+    {
+        GetComponent<AudioSource>().PlayOneShot(fail, 1F);
     }
 }

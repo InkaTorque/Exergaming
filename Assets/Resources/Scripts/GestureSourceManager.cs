@@ -160,10 +160,10 @@ public class GestureSourceManager : MonoBehaviour {
 
                             if (result != null)
                             {
-                                if (result.Confidence >= 0.75)
+                                if ((gesture.Name==GameManager.instance.currentExercise && result.Confidence>=GameManager.instance.currentCertantyThreshold))
                                 {
-                                    Debug.Log("GESTO DETECTAADO!");
-                                    Debug.Log(gesture.Name + " . " + result.Confidence);
+                                    Debug.Log("Gesto Adecuado "+result.Confidence);
+                                    GameManager.instance.NotifyContainerOfSueccessfulGesture();
                                 }
                                 // Fire Event
                                /* OnGesture(new EventArgs(gesture.Name, result.Confidence));

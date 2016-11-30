@@ -8,6 +8,7 @@ public class MinigameOverseer : MonoBehaviour {
     [HideInInspector]
     public string name;
 
+    public GameObject miniGameBoss;
     public Vector3 camPos;
     public Quaternion camAngle;
 
@@ -50,6 +51,10 @@ public class MinigameOverseer : MonoBehaviour {
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 ShowResultsScreen();
+            }
+            if(Input.GetKeyDown(KeyCode.G))
+            {
+                GestureDone();
             }
 	        if(!onGameplay)
             {
@@ -102,6 +107,7 @@ public class MinigameOverseer : MonoBehaviour {
 
     private void LaunchNewActivity()
     {
+        miniGameBoss.SendMessage("EndMinigame");
         GameManager.instance.stratRandomGame();
     }
 
@@ -143,7 +149,7 @@ public class MinigameOverseer : MonoBehaviour {
     {
         currentTime -= Time.deltaTime;
         timeUI.text = Mathf.Round(currentTime).ToString();
-        if(time<=0)
+        if (currentTime <= 0)
         {
             ShowResultsScreen();
         }
@@ -161,27 +167,34 @@ public class MinigameOverseer : MonoBehaviour {
     }
     private void FillResultsPanel()
     {
+        Transform parent = starPannel.transform;
+
+        foreach (Transform child in parent)
+        {
+            if(child.name!=starPannel.name)
+            {
+                Destroy(child);
+            }
+        }
         resultNameTex.text = gameName;
         resultsScoreText.text = "" + currentScore.ToString() + "/" + reps.ToString();
         float ratio = currentScore / reps;
-        int startNumber=0;
+        float startNumber=0;
+        Debug.Log("RATO " + ratio);
         if(ratio>=0 && ratio<=0.2)
         {
             startNumber = 1;
         }
-        if (ratio > 0.2 && ratio <= 0.4)
+        else if (ratio > 0.2 && ratio <= 0.4)
         {
             startNumber = 2;
-        }
-        if (ratio > 0.4 && ratio <= 0.6)
+        }else if (ratio > 0.4 && ratio <= 0.6)
         {
             startNumber = 3;
-        }
-        if (ratio > 0.6 && ratio <= 0.8)
+        }else if (ratio > 0.6 && ratio <= 0.8)
         {
             startNumber = 4;
-        }
-        if (ratio > 8 && ratio <= 1)
+        }else 
         {
             startNumber = 5;
         }
@@ -390,6 +403,8 @@ public class MinigameOverseer : MonoBehaviour {
         scoreUI.text = " 0/" + reps;
         currentTime = time;
         onGameplay = true;
+        miniGameBoss.SendMessage("StartMinigame");
+        GameManager.instance.allowInput = true;
     }
 
     public void StartGame(int _time , int _reps)
@@ -406,5 +421,47 @@ public class MinigameOverseer : MonoBehaviour {
         initialTutSetUpDone = false;
         tutoHoldTimer = 0f;
         resultsSetUPdONE = false;
+    }
+
+    public void SaveCameraState()
+    {
+        camAngle = Camera.main.transform.rotation;
+        camPos = Camera.main.transform.position;
+    }
+
+    public void GestureDone()
+    {
+        if(onGameplay)
+        {
+            miniGameBoss.SendMessage("GestureDone");
+            StartCoroutine(disableInputTemp());
+        }
+    }
+
+    IEnumerator disableInputTemp()
+    {
+        GameManager.instance.allowInput = false;
+         yield return new WaitForSeconds(0.5f);
+        GameManager.instance.allowInput = true;
+    }
+
+    public void ProcessEvaluation(bool validity)
+    {
+        if(validity)
+        {
+            GameManager.instance.PlaySuccess();
+            UPdateScore();
+        }
+        else
+        {
+            GameManager.instance.PlayFail();
+            //play negative sound
+        }
+    }
+
+    private void UPdateScore()
+    {
+        currentScore++;
+        scoreUI.text = currentScore+"/" + reps;
     }
 }
