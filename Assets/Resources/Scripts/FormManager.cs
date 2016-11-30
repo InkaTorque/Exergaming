@@ -68,6 +68,8 @@ public class FormManager : MonoBehaviour {
         editPacientCanvas.SetActive(true);
     }
 
+
+
     public void InitializeExergaming()
     {
         StartCoroutine(GetTreatment());
@@ -81,6 +83,7 @@ public class FormManager : MonoBehaviour {
         yield return treatmentRequest;
         if(treatmentRequest.text!="ERROR")
         {
+            disableAllViews();
             GameManager.instance.LaunchExergame(treatmentRequest.text, pathologyDict);
         }
     }

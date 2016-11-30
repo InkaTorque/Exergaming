@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour {
     public Dictionary<string,int> currentPathologyDict;
     public MinigameList[] minigameList;
     public Dictionary<string, GameObject> minigameDict;
+    public bool debug;
 
     void Start()
     {
@@ -62,18 +63,19 @@ public class GameManager : MonoBehaviour {
 
             }
         }
-        //Initialize the Kinect Connection
         stratRandomGame();
     }
 
-    public void stratRandomGame(bool debug=false)
+    public void stratRandomGame()
     {
+        Debug.Log("STARTING GAME");
         int gameIndex = 0;
         string exerciseName;
         if(debug)
         {
             exerciseName = treatment[gameIndex].name;
-            minigameDict[exerciseName].GetComponent<MinigameOverseer>().StartGame();
+            Debug.Log("starting game " + exerciseName);
+            minigameDict[exerciseName].GetComponent<MinigameOverseer>().StartGame(treatment[gameIndex].time, treatment[gameIndex].reps);
         }
         else
         {
@@ -82,8 +84,10 @@ public class GameManager : MonoBehaviour {
                 System.Random rnd = new System.Random();
                 gameIndex = rnd.Next(0, treatment.Count);
             } while (treatment[gameIndex].done == true);
+            treatment[gameIndex].done = true;
             exerciseName = treatment[gameIndex].name;
-            minigameDict[exerciseName].GetComponent<MinigameOverseer>().StartGame();
+            Debug.Log("starting game " + exerciseName);
+            minigameDict[exerciseName].GetComponent<MinigameOverseer>().StartGame(treatment[gameIndex].time, treatment[gameIndex].reps);
 
         }
     }
